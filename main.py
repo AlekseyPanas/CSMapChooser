@@ -25,9 +25,9 @@ def get_map(lst, val):
 MAPS = ["Mirage", "Inferno", "Overpass", "Train", "Cache", "Dust II", "Agency", "Office", "Anubis", "Nuke", "Vertigo"]
 MAPS = [[itm, 10] for itm in MAPS]
 
-half = [7, 8, 7, 6, 9]
-double = [3, 2, 0, 3, 1, 4, 9, 0, 0, 3]
-eliminate = 5
+half = [9, 1, 2]
+double = [0, 1, 0, 0, 1, 1]
+eliminate = None
 
 for idx in half:
     MAPS[idx][1] /= 2
