@@ -1,6 +1,7 @@
 import random
 
-extensions = {1: "st", 2: "nd", 3: "rd", 4: "th"}
+extensions = {1: "st", 2: "nd", 3: "rd"}
+extensions.setdefault(4, "th")
 
 
 def check_decimal(lst):
@@ -12,22 +13,31 @@ def check_decimal(lst):
 
 def get_map(lst, val):
     count = 0
-    print(val)
 
     for map in lst:
         if count < val <= count + map[1]:
-            return map[0]
+            return map
 
         count += map[1]
 
+
+MAPS_ARCH = ["Mirage", "Inferno", "Overpass", "Train", "Cache", "Dust II", "Agency", "Office", "Anubis", "Nuke", "Vertigo"]
 
 #           0         1          2            3       4        5          6         7          8       9         10
 MAPS = ["Mirage", "Inferno", "Overpass", "Train", "Cache", "Dust II", "Agency", "Office", "Anubis", "Nuke", "Vertigo"]
 MAPS = [[itm, 10] for itm in MAPS]
 
-half = [9, 1, 2]
-double = [0, 1, 0, 0, 1, 1]
-eliminate = None
+print(list(enumerate(MAPS_ARCH)))
+half = []
+double = []
+
+inp = input("cut half ").split(",")
+[half.append(int(i)) for i in inp]
+
+inp = input("double ").split(",")
+[double.append(int(i)) for i in inp]
+
+eliminate = int(input("eliminate "))
 
 for idx in half:
     MAPS[idx][1] /= 2
@@ -42,8 +52,13 @@ while not check_decimal(MAPS):
     MAPS = [[itm[0], itm[1] * 10] for itm in MAPS]
 MAPS = [[itm[0], int(itm[1])] for itm in MAPS]
 
-total = sum([itm[1] for itm in MAPS])
-print(total)
-
 print(MAPS)
-[print("The " + str(x + 1) + extensions.get(x + 1, "th") + " map being played is: " + get_map(MAPS, random.randint(1, total))) for x in range(4)]
+iters = 10
+final_choices = []
+for x in range(iters):
+    total = sum([itm[1] for itm in MAPS])
+    map = get_map(MAPS, random.randint(1, total))
+    if map in MAPS:
+        MAPS.remove(map)
+    final_choices.append(map[0])
+[print("The " + str(x + 1) + extensions.get(int(str(x + 1)[-1]), "th") + " map being played is: " + final_choices[x]) for x in range(len(final_choices))]
