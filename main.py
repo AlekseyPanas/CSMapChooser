@@ -62,3 +62,5 @@ for x in range(iters):
         MAPS.remove(map)
     final_choices.append(map[0])
 [print("The " + str(x + 1) + extensions.get(int(str(x + 1)[-1]), "th") + " map being played is: " + final_choices[x]) for x in range(len(final_choices))]
+
+input("Press ENTER to continue")
