@@ -69,7 +69,7 @@ class MapTile:
 
         # Counts how many map names in the same row have a common letter
         row_count = 0
-        for tile in [t for t in tiles[slices[0]: slices[1]] if t != self]:
+        for tile in [t for t in tiles[slices[0]: slices[1]] if t != self and not t.revealed]:
             for letter in set(self.map.lower()):
                 if letter != " " and letter in tile.map.lower():
                     row_count += 1
@@ -78,7 +78,7 @@ class MapTile:
         col_count = 0
         for tile in [t for t in
                      [tiles[(self_idx % w) + (i * w)] for i in list(range(h)) if (self_idx % w) + (i * w) < len(tiles)]
-                     if t != self]:
+                     if t != self and not t.revealed]:
             for letter in set(self.map.lower()):
                 if letter != " " and letter in tile.map.lower():
                     col_count += 1
@@ -98,7 +98,7 @@ SHOW_SIDEBAR = True
 
 # Names of all tiles
 map_names = ["Dust II", "Mirage", "Cache", "Inferno", "Overpass", "Nuke", "Train", "Vertigo", "Agency", "Office",
-             "Anubis"]
+             "Ancient"]
 # Actual CSGO maps to differentiate from helper strings
 eliminatable = copy.copy(map_names)
 
@@ -165,8 +165,11 @@ shift = [(SCREEN_SIZE[0] - width * square_dim) / 2, (SCREEN_SIZE[1] - height * s
 
 # Sets rows and columns for all tiles
 # Each row and column value tells you how many common letters there are in all the maps in the same row
-for i in range(len(map_tiles)):
-    map_tiles[i].set_row_and_col(width, height, i, map_tiles)
+def set_rows_and_cols():
+    for i in range(len(map_tiles)):
+        map_tiles[i].set_row_and_col(width, height, i, map_tiles)
+set_rows_and_cols()
+
 
 running = True
 while running:
@@ -199,6 +202,9 @@ while running:
 
                         # Creates new set of eliminating maps for next round
                         eliminatable_maps = get_eliminatables(map_tiles, eliminatable_maps_length)
+
+                        # Recalculates rows and cols
+                        set_rows_and_cols()
 
     for i in range(len(map_tiles)):
 
