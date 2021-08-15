@@ -42,9 +42,10 @@ class Game:
                 return -1
 
         def reveal_letters(self, chars):
+            print(chars, self.letters, self.revealed_letters)
             for c in list(set(chars)):
-                if c in self.letters and c not in self.revealed_letters:
-                    self.revealed_letters += c
+                if c.lower() in self.letters and c.lower() not in self.revealed_letters:
+                    self.revealed_letters += c.lower()
 
         def __repr__(self):
             return str((self.rgb, self.letters))
